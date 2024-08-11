@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<object>
 @{
     ViewBag.Title = "Liste";
+    // TODO admin için isDeleted ve Id alanları gözükecek şekilde revize edilmeli.
 }
 
 <div class="container">
@@ -19,7 +20,7 @@
                             if (property.Name == "IsDeleted" || property.Name == "Id")
                                 continue;
 
-                            <th>@property.Name</th>
+                            <th>@HtmlHelperExtension.GetDisplayName(property)</th>
                         }
                     }
                 </tr>
@@ -27,7 +28,7 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    var itemId = item.GetType().GetProperty("Id").GetValue(item, null);
+                    var itemId = HtmlHelperExtension.GetIdPropertyValue(item);
                     <tr>
                         <td>
                             <div class="dropdown">
@@ -46,7 +47,7 @@
                             if (property.Name == "IsDeleted" || property.Name == "Id")
                                 continue;
 
-                            <td>@property.GetValue(item, null)</td>
+                            <td>@HtmlHelperExtension.GetPropertyValue(item, property.Name)</td>
                         }
                     </tr>
                 }

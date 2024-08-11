@@ -12,6 +12,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\DynamicWebApp.Persistence\DynamicWebApp.Persistence.csproj" />
+		<ProjectReference Include="..\DynamicWebApp.Persistence\DynamicWebApp.Persistence.csproj" />
 	</ItemGroup>
 </Project>
