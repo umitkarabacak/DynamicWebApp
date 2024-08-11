@@ -1,32 +1,11 @@
-using DynamicWebApp.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+namespace DynamicWebApp.Controllers;
 
-namespace DynamicWebApp.Controllers
+public class HomeController(ILogger<HomeController> logger) : Controller
 {
-    public class HomeController : Controller
+    [HttpGet]
+    public IActionResult Index()
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        logger.LogInformation(nameof(Index));
+        return View();
     }
 }

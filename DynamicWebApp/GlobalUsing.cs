@@ -1,0 +1,9 @@
+﻿global using DynamicWebApp.Models.Base;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Mvc.ModelBinding;
+global using Microsoft.AspNetCore.Mvc.Rendering;
+global using System.ComponentModel;
+global using System.ComponentModel.DataAnnotations;
+global using System.Security.Claims;
+global using System.Security.Principal;

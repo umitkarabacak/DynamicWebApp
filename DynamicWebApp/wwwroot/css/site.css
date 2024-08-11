@@ -1,4 +1,4 @@
-html {
+﻿html {
   font-size: 14px;
 }
 
@@ -19,4 +19,26 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+/* Genel stiller */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.container-flex {
+    flex: 1;
+}
+
+/* Sticky footer stili */
+.footer-sticky {
+    margin-top: auto; /* Bu, footer'ın sayfanın en altına sabitlenmesini sağlar */
+    width: 100%;
+    background-color: #f8f9fa;
+    /* Daha fazla stil ekleyebilirsiniz */
 }
