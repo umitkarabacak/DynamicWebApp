@@ -5,12 +5,16 @@ using DynamicWebApp.Models.Countries;
 namespace DynamicWebApp.Areas.Supervisior.Controllers;
 
 [Area("Supervisor")]
-public class CountryController(IRepository<Country, long> repository, IMapper mapper) : GenericController<Country, long, CountryListViewModel, CountryDetailViewModel, CountryCreateViewModel, CountryUpdateViewModel>(repository, mapper)
+public class CountryController(IRepository<Country, long> repository, IMapper mapper)
+    : GenericController<Country, long, CountryListViewModel, CountryDetailViewModel, CountryCreateViewModel, CountryUpdateViewModel>
+    (repository, mapper)
 {
 }
 
 [Area("Supervisor")]
-public class CityController(IRepository<City, long> repository, IMapper mapper, ProjectDbContext dbContext) : GenericController<City, long, CityListViewModel, CityDetailViewModel, CityCreateViewModel, CityUpdateViewModel>(repository, mapper)
+public class CityController(IRepository<City, long> repository, IMapper mapper, ProjectDbContext dbContext)
+    : GenericController<City, long, CityListViewModel, CityDetailViewModel, CityCreateViewModel, CityUpdateViewModel>
+    (repository, mapper: mapper)
 {
     [HttpGet]
     public override async Task<IActionResult> Index()
@@ -39,5 +43,15 @@ public class CityController(IRepository<City, long> repository, IMapper mapper, 
         }
         var viewModel = mapper.Map<CityDetailViewModel>(model);
         return View(viewModel);
+    }
+
+    public override async Task DataBind()
+    {
+        var countries = await dbContext.Countries
+            .AsNoTracking()
+            .Select(c => new { c.Id, c.Name })
+            .ToListAsync();
+
+        ViewBag.CountryId = new SelectList(countries, "Id", "Name");
     }
 }

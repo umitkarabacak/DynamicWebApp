@@ -1,0 +1,85 @@
+﻿@model object
+@{
+    ViewBag.Title = "Ekle";
+    var textAreaNames = new[] { "Description", "Content", "Detail" };
+}
+
+<div class="row justify-content-md-center">
+    <form asp-antiforgery="true" asp-action="Create" method="post" class="col-8" autocomplete="off">
+        <div class="mb-3">
+            <a asp-action="Index" class="btn-link">Tüm listeye geri dön</a>
+        </div>
+        <div class="mb-3">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+        @foreach (var property in Model.GetType().GetProperties())
+        {
+            if (property.Name == "IsDeleted" || property.Name == "Id")
+                continue;
+
+            var displayName = Html.GetDisplayName(property);
+
+            var isTextArea = property.PropertyType == typeof(string) &&
+            textAreaNames.Any(name => property.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
+
+            <div class="mb-3">
+                @if (property.PropertyType == typeof(bool))
+                {
+                    <div class="form-check">
+                        <input type="checkbox" name="@property.Name" class="form-check-input" value="true" @(property.GetValue(Model) != null && (bool)property.GetValue(Model) ? "checked" : "") />
+                        <input type="hidden" name="@property.Name" value="false" />
+                        <label class="form-check-label" for="@property.Name">@displayName</label>
+                        <span class="text-danger">@Html.ValidationMessage(property.Name)</span>
+                    </div>
+                }
+                else
+                {
+                    <label class="control-label" for="@property.Name">@displayName</label>
+
+                    @if (property.PropertyType == typeof(int) || property.PropertyType == typeof(double) || property.PropertyType == typeof(decimal))
+                    {
+                        <input type="number" name="@property.Name" class="form-control" value="@property.GetValue(Model)" />
+                    }
+                    else if (property.PropertyType == typeof(DateTime))
+                    {
+                        <input type="date" name="@property.Name" class="form-control" value="@(property.GetValue(Model) != null ? ((DateTime)property.GetValue(Model)).ToString("yyyy-MM-dd") : "")" />
+                    }
+                    else if (isTextArea)
+                    {
+                        <textarea name="@property.Name" class="form-control" rows="5">@property.GetValue(Model)</textarea>
+                    }
+                    else if (property.Name.EndsWith("Id"))
+                    {
+                        <select name="@property.Name" class="form-control" asp-items="@(ViewData[property.Name] as SelectList)">
+                            <option value="">@displayName</option>
+                        </select>
+                    }
+
+                    @*  else if (property.PropertyType.IsEnum)
+            {
+            <select name="@property.Name" class="form-control">
+            @foreach (var enumValue in Enum.GetValues(property.PropertyType))
+            {
+            <option value="@enumValue" @(property.GetValue(Model)?.ToString() == enumValue.ToString() ? "selected" : "")>@enumValue</option>
+            }
+            </select>
+            } *@
+                    else
+                    {
+                        <input type="text" name="@property.Name" class="form-control" value="@property.GetValue(Model)" />
+                    }
+
+                    <span class="text-danger">@Html.ValidationMessage(property.Name)</span>
+                }
+            </div>
+        }
+
+        <div class="mb-3">
+            <button class="btn btn-outline-success col-3">Ekle</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
