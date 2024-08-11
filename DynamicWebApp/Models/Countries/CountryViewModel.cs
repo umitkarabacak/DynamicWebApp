@@ -1,4 +1,4 @@
-﻿namespace DynamicWebApp.Models.Country;
+﻿namespace DynamicWebApp.Models.Countries;
 
 public class CountryListViewModel : BaseEntityViewModel, IListItemViewModel
 {
