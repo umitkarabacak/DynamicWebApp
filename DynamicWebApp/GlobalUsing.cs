@@ -3,6 +3,7 @@ global using DynamicWebApp;
 global using DynamicWebApp.Configs;
 global using DynamicWebApp.Entities;
 global using DynamicWebApp.Entities.Base;
+global using DynamicWebApp.Entities.Enums;
 global using DynamicWebApp.Models.Base;
 global using DynamicWebApp.Persistence;
 global using DynamicWebApp.Persistence.Contexts;

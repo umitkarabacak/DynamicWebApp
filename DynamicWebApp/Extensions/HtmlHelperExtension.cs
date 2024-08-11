@@ -38,7 +38,12 @@ public static class HtmlHelperExtension
 
     public static object GetPropertyValue(this IHtmlHelper html, object obj, string propertyName)
     {
-        return obj?.GetType().GetProperty(propertyName)?.GetValue(obj, null) ?? string.Empty;
+        var value = obj?.GetType().GetProperty(propertyName)?.GetValue(obj, null) ?? string.Empty;
+
+        if (value is Enum enumValue)
+            return enumValue.GetEnumDescription() ?? value;
+
+        return value ?? string.Empty;
     }
 
     public static string GetDisplayName(this IHtmlHelper html, PropertyInfo property)

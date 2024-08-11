@@ -54,13 +54,47 @@
                             <option value="">@displayName</option>
                         </select>
                     }
+                    else if (property.PropertyType.IsEnum)
+                    {
+                        var enumValues = Enum.GetValues(property.PropertyType).Cast<Enum>();
+                        var selectListItems = enumValues.Select(e => new SelectListItem
+                        {
+                            Value = Convert.ToInt32(e).ToString(),
+                            Text = e.GetEnumDescription(),
+                            Selected = e.Equals(property.GetValue(Model))
+                        });
 
-                    @*  else if (property.PropertyType.IsEnum)
+                        <select name="@property.Name" class="form-control">
+                            @foreach (var item in selectListItems)
+                            {
+                                if (item.Selected)
+                                {
+                                    <option value="@item.Value" selected>@item.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        </select>
+                    }
+
+                    @* else if (property.PropertyType.IsEnum)
             {
+            var enumValues = Enum.GetValues(property.PropertyType).Cast<Enum>();
+            var selectListItems = enumValues
+            .Select(e => new SelectListItem
+            {
+            Value = Convert.ToInt32(e).ToString(),
+            Text = e.GetEnumDescription(),  // EnumExtension kullanımı
+            Selected = e.Equals(property.GetValue(Model))
+            });
+
             <select name="@property.Name" class="form-control">
-            @foreach (var enumValue in Enum.GetValues(property.PropertyType))
+            <option value="">Select @displayName</option>
+            @foreach (var item in selectListItems)
             {
-            <option value="@enumValue" @(property.GetValue(Model)?.ToString() == enumValue.ToString() ? "selected" : "")>@enumValue</option>
+            <option value="@item.Value"(item.Selected ? "selected" : "")>@item.Text</option>
             }
             </select>
             } *@

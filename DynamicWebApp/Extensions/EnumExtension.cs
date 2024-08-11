@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace DynamicWebApp.Extensions;
+﻿namespace DynamicWebApp.Extensions;
 
 public static class EnumExtension
 {

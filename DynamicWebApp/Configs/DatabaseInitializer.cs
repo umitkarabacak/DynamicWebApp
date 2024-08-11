@@ -34,7 +34,7 @@ public class DatabaseInitializer(IServiceProvider serviceProvider) : IHostedServ
         {
             countries =
             [
-                new Country { Id = 1, Name= "Türkiye" }
+                new Country { Id=1, Name="Türkiye", CountryEconomicType=CountryEconomicType.UnderDeveloped, Description="Türkiye gelişmekte olan bir ülke olma yolunda gidiyor" }
             ];
 
             await dbContext.Countries.AddRangeAsync(countries, cancellationToken);
@@ -52,12 +52,12 @@ public class DatabaseInitializer(IServiceProvider serviceProvider) : IHostedServ
         {
             cities =
             [
-                new City { Id = 1, CountryId = 1, Name= "Adana" },
-                new City { Id = 2, CountryId = 1, Name= "Adıyaman" },
-                new City { Id = 3, CountryId = 1, Name= "Afyon" },
-                new City { Id = 4, CountryId = 1, Name= "Ağrı" },
-                new City { Id = 5, CountryId = 1, Name= "Amasya" },
-                new City { Id = 6, CountryId = 1, Name= "Ankara" },
+                new City { Id=1, CountryId=1, Name="Adana" },
+                new City { Id=2, CountryId=1, Name="Adıyaman" },
+                new City { Id=3, CountryId=1, Name="Afyon" },
+                new City { Id=4, CountryId=1, Name="Ağrı" },
+                new City { Id=5, CountryId=1, Name="Amasya" },
+                new City { Id=6, CountryId=1, Name="Ankara" },
             ];
 
             await dbContext.Cities.AddRangeAsync(cities, cancellationToken);
