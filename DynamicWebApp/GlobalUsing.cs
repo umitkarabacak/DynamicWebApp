@@ -1,10 +1,15 @@
 ﻿global using AutoMapper;
 global using DynamicWebApp;
+global using DynamicWebApp.Areas.Controllers;
 global using DynamicWebApp.Configs;
 global using DynamicWebApp.Entities;
 global using DynamicWebApp.Entities.Base;
 global using DynamicWebApp.Entities.Enums;
+global using DynamicWebApp.Extensions;
 global using DynamicWebApp.Models.Base;
+global using DynamicWebApp.Models.Cities;
+global using DynamicWebApp.Models.Countries;
+global using DynamicWebApp.Models.Zones;
 global using DynamicWebApp.Persistence;
 global using DynamicWebApp.Persistence.Contexts;
 global using Microsoft.AspNetCore.Identity;

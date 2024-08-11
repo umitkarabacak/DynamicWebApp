@@ -20,8 +20,33 @@ public class DatabaseInitializer(IServiceProvider serviceProvider) : IHostedServ
 
     private async Task seedData(CancellationToken cancellationToken)
     {
+        await seedDataZones(cancellationToken);
         await seedDataCountries(cancellationToken);
         await seedDataCities(cancellationToken);
+    }
+
+    private async Task seedDataZones(CancellationToken cancellationToken)
+    {
+        var zones = await dbContext.Zones
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        if (zones.Count == 0)
+        {
+            zones =
+            [
+                new Zone { Id=1, Name="Europe" },
+                new Zone { Id=2, Name="Asia" },
+                new Zone { Id=3, Name="North America" },
+                new Zone { Id=4, Name="South America" },
+                new Zone { Id=5, Name="Africa" },
+                new Zone { Id=6, Name="Australia" },
+                new Zone { Id=7, Name="Antartica" },
+            ];
+
+            await dbContext.Zones.AddRangeAsync(zones, cancellationToken);
+            await dbContext.SaveChangesAsync(cancellationToken);
+        }
     }
 
     private async Task seedDataCountries(CancellationToken cancellationToken)
