@@ -1,4 +1,5 @@
-﻿global using DynamicWebApp.Models.Base;
+﻿global using DynamicWebApp;
+global using DynamicWebApp.Models.Base;
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Mvc.ModelBinding;
