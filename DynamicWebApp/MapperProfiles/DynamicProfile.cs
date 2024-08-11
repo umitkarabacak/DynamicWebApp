@@ -4,27 +4,27 @@ public class DynamicProfile : Profile
 {
     public DynamicProfile()
     {
-        var assembly = Assembly.GetExecutingAssembly();
+        // Get all assemblies referenced by the current assembly
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-        // BaseEntity<T> sınıfından türeyen tüm türleri bulun
-        var entityTypes = assembly.GetTypes()
+        // Find all types derived from BaseEntity<T>
+        var entityTypes = assemblies.SelectMany(a => a.GetTypes())
             .Where(t => t.BaseType != null &&
                         (
-                            t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == typeof(BaseEntity<>)
+                            (t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == typeof(BaseEntity<>))
                             || t.BaseType == typeof(BaseEntity)
-                        )
-                    )
+                        ))
             .ToList();
 
-        // BaseEntityViewModel<T> sınıfından türeyen tüm türleri bulun
-        var modelTypes = assembly.GetTypes()
+        // Find all types derived from BaseEntityViewModel<T>
+        var modelTypes = assemblies.SelectMany(a => a.GetTypes())
             .Where(t => t.BaseType != null &&
                         (
-                            t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == typeof(BaseEntityViewModel<>)
+                            (t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == typeof(BaseEntityViewModel<>))
                             || t.BaseType == typeof(BaseEntityViewModel)
-                        )
-                    )
+                        ))
             .ToList();
+
         var createMapMethod = typeof(Profile).GetMethod("CreateMap", new Type[] { });
 
         foreach (var entityType in entityTypes)
