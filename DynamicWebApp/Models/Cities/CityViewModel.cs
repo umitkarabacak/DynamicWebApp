@@ -1,6 +1,6 @@
 ﻿namespace DynamicWebApp.Models.Cities;
 
-public class CityListItemViewModel : BaseEntityViewModel, IListItemViewModel
+public class CityListViewModel : BaseEntityViewModel, IListItemViewModel
 {
     [DisplayName("Ülke Adı")]
     public string CountryName { get; set; }

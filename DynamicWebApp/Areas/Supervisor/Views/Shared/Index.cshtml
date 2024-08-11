@@ -1,0 +1,56 @@
+﻿@model IEnumerable<object>
+@{
+    ViewBag.Title = "Liste";
+}
+
+<div class="container">
+    <div class="mb-3">
+        <a asp-action="Create" class="btn btn-outline-success offset-9 col-3">Ekle</a>
+    </div>
+    <div class="row">
+        <table id="tblCategories" class="table table-striped table-responsive table-hover table-bordered col-12 mt-5">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var property in Model.First().GetType().GetProperties())
+                        {
+                            if (property.Name == "IsDeleted" || property.Name == "Id")
+                                continue;
+
+                            <th>@property.Name</th>
+                        }
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var itemId = item.GetType().GetProperty("Id").GetValue(item, null);
+                    <tr>
+                        <td>
+                            <div class="dropdown">
+                                <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    İşlemler
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a asp-action="Detail" asp-route-id="@itemId" class="dropdown-item">Detay</a></li>
+                                    <li><a asp-action="Update" asp-route-id="@itemId" class="dropdown-item">Düzenle</a></li>
+                                    <li><a asp-action="Delete" asp-route-id="@itemId" class="dropdown-item">Sil</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                        @foreach (var property in item.GetType().GetProperties())
+                        {
+                            if (property.Name == "IsDeleted" || property.Name == "Id")
+                                continue;
+
+                            <td>@property.GetValue(item, null)</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
