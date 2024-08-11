@@ -6,5 +6,9 @@ public static class DI
     {
         services.AddMvc()
             .AddRazorRuntimeCompilation();
+
+        services.AddPersistence(configuration);
+
+        services.AddHostedService<DatabaseInitializer>();
     }
 }

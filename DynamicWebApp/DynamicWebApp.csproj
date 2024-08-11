@@ -9,4 +9,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.7" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.7" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\DynamicWebApp.Persistence\DynamicWebApp.Persistence.csproj" />
+	</ItemGroup>
 </Project>
