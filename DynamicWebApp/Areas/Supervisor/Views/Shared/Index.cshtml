@@ -20,7 +20,7 @@
                             if (property.Name == "IsDeleted" || property.Name == "Id")
                                 continue;
 
-                            <th>@HtmlHelperExtension.GetDisplayName(property)</th>
+                            <th>@Html.GetDisplayName(property)</th>
                         }
                     }
                 </tr>
@@ -28,7 +28,7 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    var itemId = HtmlHelperExtension.GetIdPropertyValue(item);
+                    var itemId = Html.GetIdPropertyValue(item);
                     <tr>
                         <td>
                             <div class="dropdown">
@@ -47,7 +47,7 @@
                             if (property.Name == "IsDeleted" || property.Name == "Id")
                                 continue;
 
-                            <td>@HtmlHelperExtension.GetPropertyValue(item, property.Name)</td>
+                            <td>@Html.GetPropertyValue(item, property.Name)</td>
                         }
                     </tr>
                 }

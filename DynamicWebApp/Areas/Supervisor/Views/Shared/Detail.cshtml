@@ -1,0 +1,29 @@
+﻿@model object
+@{
+    ViewBag.Title = "Detay";
+    // TODO admin için isDeleted ve Id alanları gözükecek şekilde revize edilmeli.
+}
+
+<div class="container">
+    <div class="row justify-content-md-center">
+        <h5 class="text-center">@ViewBag.Title</h5>
+        <div class="col-8">
+            <div class="row">
+                @foreach (var property in Model.GetType().GetProperties())
+                {
+                    if (property.Name == "IsDeleted" || property.Name == "Id")
+                        continue;
+
+                    @* <div class="col-12 mb-3">
+                        <strong>@HtmlHelperExtension.GetDisplayName(property):</strong>
+                        <span>@HtmlHelperExtension.GetPropertyValue(Model, property.Name)</span>
+                    </div> *@
+                    <dt class="col-sm-3">@Html.GetDisplayName(property)</dt>
+                    <dd class="col-sm-9">@Html.GetPropertyValue(Model, property.Name)</dd>
+
+                }
+            </div>
+
+        </div>
+    </div>
+</div>

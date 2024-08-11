@@ -10,8 +10,9 @@ public class CountryController(IRepository<Country, long> repository, IMapper ma
 }
 
 [Area("Supervisor")]
-public class CityController(IRepository<City, long> repository, IMapper mapper, ProjectDbContext dbContext) : GenericController<City, long, CityListViewModel, CountryDetailViewModel, CountryCreateViewModel, CountryUpdateViewModel>(repository, mapper)
+public class CityController(IRepository<City, long> repository, IMapper mapper, ProjectDbContext dbContext) : GenericController<City, long, CityListViewModel, CityDetailViewModel, CityCreateViewModel, CityUpdateViewModel>(repository, mapper)
 {
+    [HttpGet]
     public override async Task<IActionResult> Index()
     {
         await DataBind();
@@ -21,5 +22,22 @@ public class CityController(IRepository<City, long> repository, IMapper mapper, 
             .ToListAsync();
         var viewModels = mapper.Map<List<CityListViewModel>>(models);
         return View(viewModels);
+    }
+
+    [HttpGet]
+    public override async Task<IActionResult> Detail(long id)
+    {
+        await DataBind();
+        var model = await dbContext.Cities
+            .AsNoTracking()
+            .Include(c => c.Country)
+            .FirstOrDefaultAsync(c => c.Id.Equals(id));
+
+        if (model == null)
+        {
+            return NotFound();
+        }
+        var viewModel = mapper.Map<CityDetailViewModel>(model);
+        return View(viewModel);
     }
 }

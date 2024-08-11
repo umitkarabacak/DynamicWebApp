@@ -31,17 +31,17 @@ public static class HtmlHelperExtension
         return html.IsActive(areas, controllers, actions) == "active";
     }
 
-    public static object GetIdPropertyValue(this object obj)
+    public static object GetIdPropertyValue(this IHtmlHelper html, object obj)
     {
-        return GetPropertyValue(obj, "Id");
+        return html.GetPropertyValue(obj, "Id");
     }
 
-    public static object GetPropertyValue(object obj, string propertyName)
+    public static object GetPropertyValue(this IHtmlHelper html, object obj, string propertyName)
     {
         return obj?.GetType().GetProperty(propertyName)?.GetValue(obj, null) ?? string.Empty;
     }
 
-    public static string GetDisplayName(PropertyInfo property)
+    public static string GetDisplayName(this IHtmlHelper html, PropertyInfo property)
     {
         var displayName = property.GetCustomAttributes(typeof(DisplayNameAttribute), true)
             .Cast<DisplayNameAttribute>()
