@@ -1,4 +1,7 @@
-﻿namespace DynamicWebApp.Areas.Supervisior.Controllers;
+﻿using DynamicWebApp.Areas.Controllers;
+using DynamicWebApp.Models.Countries;
+
+namespace DynamicWebApp.Areas.Supervisior.Controllers;
 
 [Area("Supervisor")]
 public class CountryController(ProjectDbContext dbContext) : Controller
@@ -11,4 +14,8 @@ public class CountryController(ProjectDbContext dbContext) : Controller
 
         return Ok(countries);
     }
+}
+[Area("Supervisor")]
+public class GenericCountryController(IRepository<Country, long> repository, IMapper mapper) : GenericController<Country, long, CountryListViewModel, CountryDetailViewModel, CountryCreateViewModel, CountryUpdateViewModel>(repository, mapper)
+{
 }

@@ -1,11 +1,5 @@
 ﻿namespace DynamicWebApp.Models.Cities;
 
-public class CityListViewModel : BaseEntityViewModel, IListViewModel
-{
-    [DisplayName("Kayıtlar")]
-    public List<CityListItemViewModel> Items { get; set; } = [];
-}
-
 public class CityListItemViewModel : BaseEntityViewModel, IListItemViewModel
 {
     [DisplayName("Ülke Adı")]

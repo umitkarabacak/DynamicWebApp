@@ -13,8 +13,14 @@
                     <li class="nav-item">
                         <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">Anasayfa</a>
                     </li>
-                    <li class="nav-item">
+                    @* <li class="nav-item">
                         <a class="nav-link disabled">Link</a>
+                    </li> *@
+                    <li class="nav-item">
+                        <a asp-area="Supervisor" asp-controller="Country" asp-action="Index" class="nav-link">Country</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="Supervisor" asp-controller="GenericCountry" asp-action="Index" class="nav-link">Generic Country</a>
                     </li>
                 </ul>
                 @if (isAuthUser)
