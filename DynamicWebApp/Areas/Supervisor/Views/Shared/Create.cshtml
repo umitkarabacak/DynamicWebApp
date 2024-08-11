@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Ekle";
     var textAreaNames = new[] { "Description", "Content", "Detail" };
+    //TODO enum ve select list için birleştirme yapılmasını denetle
 }
 
 <div class="row justify-content-md-center">
@@ -51,53 +52,15 @@
                     else if (property.Name.EndsWith("Id"))
                     {
                         <select name="@property.Name" class="form-control" asp-items="@(ViewData[property.Name] as SelectList)">
-                            <option value="">@displayName</option>
+                            <option value="">@displayName Seçin</option>
                         </select>
                     }
                     else if (property.PropertyType.IsEnum)
                     {
-                        var enumValues = Enum.GetValues(property.PropertyType).Cast<Enum>();
-                        var selectListItems = enumValues.Select(e => new SelectListItem
-                        {
-                            Value = Convert.ToInt32(e).ToString(),
-                            Text = e.GetEnumDescription(),
-                            Selected = e.Equals(property.GetValue(Model))
-                        });
-
-                        <select name="@property.Name" class="form-control">
-                            @foreach (var item in selectListItems)
-                            {
-                                if (item.Selected)
-                                {
-                                    <option value="@item.Value" selected>@item.Text</option>
-                                }
-                                else
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }
-                            }
+                        <select name="@property.Name" class="form-control" asp-items="@(ViewData[property.Name] as SelectList)">
+                            <option value="">@displayName Seçin</option>
                         </select>
                     }
-
-                    @* else if (property.PropertyType.IsEnum)
-            {
-            var enumValues = Enum.GetValues(property.PropertyType).Cast<Enum>();
-            var selectListItems = enumValues
-            .Select(e => new SelectListItem
-            {
-            Value = Convert.ToInt32(e).ToString(),
-            Text = e.GetEnumDescription(),  // EnumExtension kullanımı
-            Selected = e.Equals(property.GetValue(Model))
-            });
-
-            <select name="@property.Name" class="form-control">
-            <option value="">Select @displayName</option>
-            @foreach (var item in selectListItems)
-            {
-            <option value="@item.Value"(item.Selected ? "selected" : "")>@item.Text</option>
-            }
-            </select>
-            } *@
                     else
                     {
                         <input type="text" name="@property.Name" class="form-control" value="@property.GetValue(Model)" />

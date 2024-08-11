@@ -1,4 +1,5 @@
 ﻿using DynamicWebApp.Areas.Controllers;
+using DynamicWebApp.Extensions;
 using DynamicWebApp.Models.Cities;
 using DynamicWebApp.Models.Countries;
 
@@ -9,6 +10,12 @@ public class CountryController(IRepository<Country, long> repository, IMapper ma
     : GenericController<Country, long, CountryListViewModel, CountryDetailViewModel, CountryCreateViewModel, CountryUpdateViewModel>
     (repository, mapper)
 {
+    public override async Task DataBind()
+    {
+        ViewBag.CountryEconomicType = EnumExtension.GetSelectList<CountryEconomicType>();
+
+        await Task.CompletedTask;
+    }
 }
 
 [Area("Supervisor")]
