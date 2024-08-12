@@ -25,8 +25,6 @@ public class DynamicProfile : Profile
                         ))
             .ToList();
 
-        var createMapMethod = typeof(Profile).GetMethod("CreateMap", new Type[] { });
-
         foreach (var entityType in entityTypes)
         {
             // Her entity türü için, aynı isimle başlayan model türlerini bulun
@@ -35,40 +33,55 @@ public class DynamicProfile : Profile
             foreach (var modelType in matchingModels)
             {
                 // Her eşleşen tür için map oluşturun
-                var genericCreateMapMethod = createMapMethod.MakeGenericMethod(entityType, modelType);
-                var map = genericCreateMapMethod.Invoke(this, null);
+                var map = CreateMap(entityType, modelType);
 
-                // ReverseMap'i çağır
-                var reverseMapMethod = map.GetType().GetMethod("ReverseMap");
-                reverseMapMethod.Invoke(map, null);
+                // Sonu "Ids" ile biten alanlar için özel map işlemleri ekleyin
+                var idsProperties = modelType.GetProperties()
+                    .Where(p => p.Name.EndsWith("Ids") &&
+                               (p.PropertyType == typeof(string[]) ||
+                                p.PropertyType == typeof(int[]) ||
+                                p.PropertyType == typeof(long[]) ||
+                                p.PropertyType == typeof(Guid[])))
+                    .ToList();
+
+                foreach (var property in idsProperties)
+                {
+                    var entityProp = entityType.GetProperty(property.Name);
+                    if (entityProp != null)
+                    {
+                        if (property.PropertyType == typeof(string[]))
+                        {
+                            map.ForMember(property.Name, opts => opts.MapFrom(src => convertToArray((string)entityProp.GetValue(src))));
+                            map.ReverseMap().ForMember(property.Name, opts => opts.MapFrom(src => convertToString((string[])property.GetValue(src))));
+                        }
+                        else if (property.PropertyType == typeof(int[]))
+                        {
+                            map.ForMember(property.Name, opts => opts.MapFrom(src => convertToArray((string)entityProp.GetValue(src)).Select(int.Parse).ToArray()));
+                            map.ReverseMap().ForMember(property.Name, opts => opts.MapFrom(src => convertToString((int[])property.GetValue(src))));
+                        }
+                        else if (property.PropertyType == typeof(long[]))
+                        {
+                            map.ForMember(property.Name, opts => opts.MapFrom(src => convertToArray((string)entityProp.GetValue(src)).Select(long.Parse).ToArray()));
+                            map.ReverseMap().ForMember(property.Name, opts => opts.MapFrom(src => convertToString((long[])property.GetValue(src))));
+                        }
+                        else if (property.PropertyType == typeof(Guid[]))
+                        {
+                            map.ForMember(property.Name, opts => opts.MapFrom(src => convertToArray((string)entityProp.GetValue(src)).Select(Guid.Parse).ToArray()));
+                            map.ReverseMap().ForMember(property.Name, opts => opts.MapFrom(src => convertToString((Guid[])property.GetValue(src))));
+                        }
+                    }
+                }
             }
         }
     }
-}
 
-public class ManualProfile : Profile
-{
-    public ManualProfile()
+    static string[] convertToArray(string ids)
     {
-        CreateMap<Country, CountryDetailViewModel>()
-            .ForMember(dest => dest.ZoneIds,
-                opts => opts.MapFrom(src => convertZoneIds(src.ZoneIds)))
-            .ReverseMap()
-            .ForMember(dest => dest.ZoneIds, opts => opts.MapFrom(src => convertZoneIdsText(src.ZoneIds)));
-
-        CreateMap<Country, CountryCreateViewModel>()
-            .ForMember(dest => dest.ZoneIds, opts => opts.MapFrom(src => convertZoneIds(src.ZoneIds)))
-            .ReverseMap()
-            .ForMember(dest => dest.ZoneIds, opts => opts.MapFrom(src => convertZoneIdsText(src.ZoneIds)));
+        return string.IsNullOrWhiteSpace(ids) ? [] : ids.Split(',');
     }
 
-    private string[] convertZoneIds(string zoneIds)
+    static string convertToString(Array ids)
     {
-        return string.IsNullOrWhiteSpace(zoneIds) ? [] : zoneIds.Split(',');
-    }
-
-    private string convertZoneIdsText(string[] zoneIds)
-    {
-        return zoneIds.Length == 0 ? string.Empty : string.Join(",", zoneIds);
+        return ids == null || ids.Length == 0 ? string.Empty : string.Join(",", ids.Cast<object>());
     }
 }
