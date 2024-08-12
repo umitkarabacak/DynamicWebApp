@@ -140,7 +140,8 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
             return NotFound();
         }
         var viewModel = mapper.Map<TUpdateViewModel>(model);
-        return View(viewModel);
+        await SetSelectedValues(viewModel);
+        return View("Create", viewModel);
     }
 
     [HttpPost]
@@ -150,7 +151,7 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
         await DataBind();
         if (!ModelState.IsValid)
         {
-            return View(viewModel);
+            return View("Create", viewModel);
         }
 
         var model = mapper.Map<T>(viewModel);
@@ -201,4 +202,55 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
     }
 
     public virtual async Task DataBind() => await Task.CompletedTask;
+
+    public virtual async Task SetSelectedValues(TUpdateViewModel viewModel)
+    {
+        var modelType = typeof(TUpdateViewModel);
+
+        foreach (var property in modelType.GetProperties())
+        {
+            if (property.Name.Equals("Id"))
+                continue;
+
+            if (property.Name.EndsWith("Id"))
+            {
+                var selectedValue = property.GetValue(viewModel);
+                if (selectedValue != null)
+                {
+                    var selectList = ViewData[property.Name] as SelectList;
+                    if (selectList != null)
+                    {
+                        ViewData[property.Name] = new SelectList(selectList.Items, selectList.DataValueField, selectList.DataTextField, selectedValue);
+                    }
+                }
+            }
+            else if (property.Name.EndsWith("Ids"))
+            {
+                var selectedValues = property.GetValue(viewModel) as IEnumerable<object>;
+                if (selectedValues != null)
+                {
+                    var selectList = ViewData[property.Name] as SelectList;
+                    if (selectList != null)
+                    {
+                        ViewData[property.Name] = new SelectList(selectList.Items, selectList.DataValueField, selectList.DataTextField, selectedValues);
+                    }
+                }
+            }
+            else if (property.PropertyType.IsEnum)
+            {
+                var selectedValue = property.GetValue(viewModel);
+                if (selectedValue != null)
+                {
+                    var selectList = ViewData[property.Name] as SelectList;
+                    if (selectList != null)
+                    {
+                        ViewData[property.Name] = new SelectList(selectList.Items, selectList.DataValueField, selectList.DataTextField, selectedValue);
+                    }
+                }
+            }
+        }
+
+        await Task.CompletedTask;
+    }
+
 }

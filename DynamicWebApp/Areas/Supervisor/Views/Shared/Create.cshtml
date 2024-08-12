@@ -1,12 +1,13 @@
 ﻿@model object
 @{
-    ViewBag.Title = "Ekle";
+    bool isCreate = Model is ICreateViewModel;
+    ViewBag.Title = isCreate ? "Ekle" : "Düzenle";
     var textAreaNames = new[] { "Description", "Content", "Detail" };
     //TODO enum ve select list için birleştirme yapılmasını denetle
 }
 
 <div class="row justify-content-md-center">
-    <form asp-antiforgery="true" asp-action="Create" method="post" class="col-8" autocomplete="off">
+    <form asp-antiforgery="true" asp-action="@(isCreate ? "Create" : "Update")" method="post" class="col-8" autocomplete="off">
         <div class="mb-3">
             <a asp-action="Index" class="btn-link">Tüm listeye geri dön</a>
         </div>
@@ -51,22 +52,39 @@
                     }
                     else if (property.PropertyType.IsEnum)
                     {
-                        <select name="@property.Name" class="form-control" asp-items="@(ViewData[property.Name] as SelectList)">
+                        var selectedValue = property.GetValue(Model)?.ToString();
+                        <select name="@property.Name" class="form-control">
                             <option value="">@displayName Seçin</option>
+                            @foreach (var item in ViewData[property.Name] as SelectList)
+                            {
+                                <option value="@item.Value" selected="@(item.Value==selectedValue ? "selected" : null)">@item.Text</option>
+                            }
                         </select>
                     }
                     else if (property.Name.EndsWith("Ids"))
                     {
-                        <select name="@property.Name" class="form-control select2" asp-items="@(ViewData[property.Name] as SelectList)" multiple>
-                            <option value="">@displayName Seçin</option>
+                        var selectedValues = property.GetValue(Model) as IEnumerable<object>;
+                        var selectedValueStrings = selectedValues?.Select(v => v.ToString()).ToList() ?? new List<string>();
+
+                        <select name="@property.Name" class="form-control select2" multiple>
+                            @foreach (var item in ViewData[property.Name] as SelectList)
+                            {
+                                <option value="@item.Value" selected="@(selectedValueStrings.Contains(item.Value) ? "selected" : null)">@item.Text</option>
+                            }
                         </select>
                     }
                     else if (property.Name.EndsWith("Id"))
                     {
-                        <select name="@property.Name" class="form-control" asp-items="@(ViewData[property.Name] as SelectList)">
+                        var selectedValue = property.GetValue(Model)?.ToString();
+
+                        <select name="@property.Name" class="form-control">
                             <option value="">@displayName Seçin</option>
+                            @foreach (var item in ViewData[property.Name] as SelectList)
+                            {
+                                <option value="@item.Value" selected="@(item.Value == selectedValue ? "selected" : null)">@item.Text</option>
+                            }
                         </select>
-                    }                    
+                    }
                     else
                     {
                         <input type="text" name="@property.Name" class="form-control" value="@property.GetValue(Model)" />
@@ -78,7 +96,7 @@
         }
 
         <div class="mb-3">
-            <button class="btn btn-outline-success col-3">Ekle</button>
+            <button class="btn btn-outline-success col-3">@ViewBag.Title</button>
         </div>
     </form>
 </div>

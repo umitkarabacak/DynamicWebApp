@@ -58,7 +58,7 @@ public class CountryUpdateViewModel : BaseEntityViewModel, IUpdateViewModel
     public string Description { get; set; }
 
     [DisplayName("Ekonomi Türü")]
-    public CountryEconomicType? CountryEconomicType { get; set; }
+    public CountryEconomicType CountryEconomicType { get; set; }
 
     [DisplayName("Bölgeler")]
     public string[] ZoneIds { get; set; }
