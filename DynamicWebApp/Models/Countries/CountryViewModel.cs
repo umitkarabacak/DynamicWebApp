@@ -24,6 +24,9 @@ public class CountryDetailViewModel : BaseEntityViewModel, IDetailViewModel
 
     [DisplayName("Bölgeler")]
     public string[] ZoneIds { get; set; }
+
+    [DisplayName("Geçen Paralar")]
+    public CurrencyType[] CurrencyTypeIds { get; set; }
 }
 
 public class CountryCreateViewModel : BaseEntityViewModel, ICreateViewModel
@@ -40,6 +43,9 @@ public class CountryCreateViewModel : BaseEntityViewModel, ICreateViewModel
 
     [DisplayName("Bölgeler")]
     public string[] ZoneIds { get; set; }
+
+    [DisplayName("Geçen Paralar")]
+    public CurrencyType[] CurrencyTypeIds { get; set; }
 }
 
 public class CountryUpdateViewModel : BaseEntityViewModel, IUpdateViewModel
@@ -56,4 +62,7 @@ public class CountryUpdateViewModel : BaseEntityViewModel, IUpdateViewModel
 
     [DisplayName("Bölgeler")]
     public string[] ZoneIds { get; set; }
+
+    [DisplayName("Geçen Paralar")]
+    public CurrencyType[] CurrencyTypeIds { get; set; }
 }

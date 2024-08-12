@@ -71,17 +71,43 @@ public class DynamicProfile : Profile
                         }
                     }
                 }
+
+                // Enum dizileri için map işlemleri ekleyin
+                var enumProperties = modelType.GetProperties()
+                    .Where(p => p.PropertyType.IsArray && p.PropertyType.GetElementType().IsEnum)
+                    .ToList();
+
+                foreach (var property in enumProperties)
+                {
+                    var entityProp = entityType.GetProperty(property.Name);
+                    if (entityProp != null)
+                    {
+                        var enumType = property.PropertyType.GetElementType();
+                        map.ForMember(property.Name, opts => opts.MapFrom(src => convertToEnumArray((string)entityProp.GetValue(src), enumType)));
+                        map.ReverseMap().ForMember(property.Name, opts => opts.MapFrom(src => convertEnumArrayToString((Array)property.GetValue(src))));
+                    }
+                }
             }
         }
     }
 
-    static string[] convertToArray(string ids)
+    private string[] convertToArray(string ids)
     {
-        return string.IsNullOrWhiteSpace(ids) ? [] : ids.Split(',');
+        return string.IsNullOrWhiteSpace(ids) ? Array.Empty<string>() : ids.Split(',');
     }
 
-    static string convertToString(Array ids)
+    private string convertToString(Array ids)
     {
         return ids == null || ids.Length == 0 ? string.Empty : string.Join(",", ids.Cast<object>());
+    }
+
+    private object[] convertToEnumArray(string ids, Type enumType)
+    {
+        return convertToArray(ids).Select(x => Enum.Parse(enumType, x)).ToArray();
+    }
+
+    private string convertEnumArrayToString(Array enumArray)
+    {
+        return string.Join(",", enumArray.Cast<Enum>().Select(e => e.ToString()));
     }
 }

@@ -6,4 +6,5 @@ public class Country : BaseEntity
     public CountryEconomicType CountryEconomicType { get; set; }
     public string Description { get; set; }
     public string ZoneIds { get; set; }
+    public string CurrencyTypeIds { get; set; }
 }
