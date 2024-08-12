@@ -57,22 +57,29 @@
                             <option value="">@displayName Seçin</option>
                             @foreach (var item in ViewData[property.Name] as SelectList)
                             {
-                                <option value="@item.Value" selected="@(item.Value==selectedValue ? "selected" : null)">@item.Text</option>
+                                <option value="@item.Value" selected="@(item.Value==selectedValue ? "selected" : "")">@item.Text</option>
                             }
                         </select>
                     }
-                    else if (property.Name.EndsWith("Ids"))
+                    else if (property.Name.EndsWith("Ids") || (property.PropertyType.IsArray && property.PropertyType.GetElementType().IsEnum))
                     {
-                        var selectedValues = property.GetValue(Model) as IEnumerable<object>;
-                        var selectedValueStrings = selectedValues?.Select(v => v.ToString()).ToList() ?? new List<string>();
+                        var selectedValuesArray = property.GetValue(Model) as Array;
+                        var selectedValueStrings = selectedValuesArray
+                        .Cast<object>()
+                        .Select(v => Convert.ToInt32(v).ToString())
+                        .ToList();
 
                         <select name="@property.Name" class="form-control select2" multiple>
                             @foreach (var item in ViewData[property.Name] as SelectList)
                             {
-                                <option value="@item.Value" selected="@(selectedValueStrings.Contains(item.Value) ? "selected" : null)">@item.Text</option>
+                                var currentValue = item.Value?.ToString();  // item.Value'yi string olarak al
+                                var hasSelectedValue = selectedValueStrings.Contains(currentValue);
+
+                                <option value="@item.Value" selected="@(hasSelectedValue ? "selected" : null)">@item.Text</option>
                             }
                         </select>
                     }
+
                     else if (property.Name.EndsWith("Id"))
                     {
                         var selectedValue = property.GetValue(Model)?.ToString();

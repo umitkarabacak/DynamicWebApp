@@ -224,18 +224,25 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
                     }
                 }
             }
-            else if (property.Name.EndsWith("Ids"))
+            else if (property.Name.EndsWith("Ids") || (property.PropertyType.IsArray && property.PropertyType.GetElementType().IsEnum))
             {
-                var selectedValues = property.GetValue(viewModel) as IEnumerable<object>;
-                if (selectedValues != null)
+                var selectedValuesArray = property.GetValue(viewModel) as Array;
+
+                if (selectedValuesArray != null)
                 {
                     var selectList = ViewData[property.Name] as SelectList;
                     if (selectList != null)
                     {
-                        ViewData[property.Name] = new SelectList(selectList.Items, selectList.DataValueField, selectList.DataTextField, selectedValues);
+                        var selectedValueStrings = selectedValuesArray
+                            .Cast<object>()
+                            .Select(v => Convert.ToInt32(v).ToString())  // Enum'un sayısal karşılığını al ve string'e çevir
+                            .ToList();
+
+                        ViewData[property.Name] = new SelectList(selectList.Items, selectList.DataValueField, selectList.DataTextField, selectedValueStrings);
                     }
                 }
             }
+
             else if (property.PropertyType.IsEnum)
             {
                 var selectedValue = property.GetValue(viewModel);
@@ -252,5 +259,6 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
 
         await Task.CompletedTask;
     }
+
 
 }
