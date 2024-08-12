@@ -91,12 +91,12 @@ public class DynamicProfile : Profile
         }
     }
 
-    private string[] convertToArray(string ids)
+    static string[] convertToArray(string ids)
     {
-        return string.IsNullOrWhiteSpace(ids) ? Array.Empty<string>() : ids.Split(',');
+        return string.IsNullOrWhiteSpace(ids) ? [] : ids.Split(',');
     }
 
-    private string convertToString(Array ids)
+    static string convertToString(Array ids)
     {
         return ids == null || ids.Length == 0 ? string.Empty : string.Join(",", ids.Cast<object>());
     }
