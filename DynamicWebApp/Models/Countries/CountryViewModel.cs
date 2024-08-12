@@ -21,6 +21,9 @@ public class CountryDetailViewModel : BaseEntityViewModel, IDetailViewModel
 
     [DisplayName("Ekonomi Türü")]
     public CountryEconomicType? CountryEconomicType { get; set; }
+
+    [DisplayName("Bölgeler")]
+    public string[] ZoneIds { get; set; }
 }
 
 public class CountryCreateViewModel : BaseEntityViewModel, ICreateViewModel
@@ -33,7 +36,10 @@ public class CountryCreateViewModel : BaseEntityViewModel, ICreateViewModel
     public string Description { get; set; }
 
     [DisplayName("Ekonomi Türü")]
-    public CountryEconomicType? CountryEconomicType { get; set; }
+    public CountryEconomicType CountryEconomicType { get; set; }
+
+    [DisplayName("Bölgeler")]
+    public string[] ZoneIds { get; set; }
 }
 
 public class CountryUpdateViewModel : BaseEntityViewModel, IUpdateViewModel
@@ -47,4 +53,7 @@ public class CountryUpdateViewModel : BaseEntityViewModel, IUpdateViewModel
 
     [DisplayName("Ekonomi Türü")]
     public CountryEconomicType? CountryEconomicType { get; set; }
+
+    [DisplayName("Bölgeler")]
+    public string[] ZoneIds { get; set; }
 }

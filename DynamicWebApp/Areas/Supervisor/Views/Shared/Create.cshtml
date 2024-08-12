@@ -49,6 +49,12 @@
                     {
                         <textarea name="@property.Name" class="form-control" rows="5">@property.GetValue(Model)</textarea>
                     }
+                    else if (property.Name.EndsWith("Ids"))
+                    {
+                        <select name="@property.Name" class="form-control select2" asp-items="@(ViewData[property.Name] as SelectList)" multiple>
+                            <option value="">@displayName Seçin</option>
+                        </select>
+                    }
                     else if (property.Name.EndsWith("Id"))
                     {
                         <select name="@property.Name" class="form-control" asp-items="@(ViewData[property.Name] as SelectList)">

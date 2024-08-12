@@ -59,7 +59,7 @@ public class DatabaseInitializer(IServiceProvider serviceProvider) : IHostedServ
         {
             countries =
             [
-                new Country { Id=1, Name="Türkiye", CountryEconomicType=CountryEconomicType.UnderDeveloped, Description="Türkiye gelişmekte olan bir ülke olma yolunda gidiyor" }
+                new Country { Id=1, Name="Türkiye", CountryEconomicType=CountryEconomicType.UnderDeveloped, Description="Türkiye gelişmekte olan bir ülke olma yolunda gidiyor", ZoneIds="1,2" }
             ];
 
             await dbContext.Countries.AddRangeAsync(countries, cancellationToken);

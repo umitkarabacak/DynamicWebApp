@@ -45,3 +45,30 @@ public class DynamicProfile : Profile
         }
     }
 }
+
+public class ManualProfile : Profile
+{
+    public ManualProfile()
+    {
+        CreateMap<Country, CountryDetailViewModel>()
+            .ForMember(dest => dest.ZoneIds,
+                opts => opts.MapFrom(src => convertZoneIds(src.ZoneIds)))
+            .ReverseMap()
+            .ForMember(dest => dest.ZoneIds, opts => opts.MapFrom(src => convertZoneIdsText(src.ZoneIds)));
+
+        CreateMap<Country, CountryCreateViewModel>()
+            .ForMember(dest => dest.ZoneIds, opts => opts.MapFrom(src => convertZoneIds(src.ZoneIds)))
+            .ReverseMap()
+            .ForMember(dest => dest.ZoneIds, opts => opts.MapFrom(src => convertZoneIdsText(src.ZoneIds)));
+    }
+
+    private string[] convertZoneIds(string zoneIds)
+    {
+        return string.IsNullOrWhiteSpace(zoneIds) ? [] : zoneIds.Split(',');
+    }
+
+    private string convertZoneIdsText(string[] zoneIds)
+    {
+        return zoneIds.Length == 0 ? string.Empty : string.Join(",", zoneIds);
+    }
+}
