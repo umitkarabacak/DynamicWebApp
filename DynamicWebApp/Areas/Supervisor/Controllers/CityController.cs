@@ -1,5 +1,4 @@
-﻿
-namespace DynamicWebApp.Areas.Supervisior.Controllers;
+﻿namespace DynamicWebApp.Areas.Supervisior.Controllers;
 
 [Area("Supervisor")]
 public class CityController(IRepository<City, long> repository, IMapper mapper, ProjectDbContext dbContext)
