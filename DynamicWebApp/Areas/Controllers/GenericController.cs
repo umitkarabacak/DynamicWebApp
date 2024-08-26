@@ -112,7 +112,7 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
 
         var createViewModel = Activator.CreateInstance<TCreateViewModel>();
 
-        return View(createViewModel);
+        return View("AddOrEdit", createViewModel);
     }
 
     [HttpPost]
@@ -122,7 +122,7 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
         await DataBind();
         if (!ModelState.IsValid)
         {
-            return View(viewModel);
+            return View("AddOrEdit", viewModel);
         }
 
         var model = mapper.Map<T>(viewModel);
@@ -141,7 +141,7 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
         }
         var viewModel = mapper.Map<TUpdateViewModel>(model);
         await SetSelectedValues(viewModel);
-        return View("Create", viewModel);
+        return View("AddOrEdit", viewModel);
     }
 
     [HttpPost]
@@ -151,7 +151,7 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
         await DataBind();
         if (!ModelState.IsValid)
         {
-            return View("Create", viewModel);
+            return View("AddOrEdit", viewModel);
         }
 
         var model = mapper.Map<T>(viewModel);
