@@ -242,7 +242,6 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
                     }
                 }
             }
-
             else if (property.PropertyType.IsEnum)
             {
                 var selectedValue = property.GetValue(viewModel);
@@ -259,6 +258,4 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
 
         await Task.CompletedTask;
     }
-
-
 }
