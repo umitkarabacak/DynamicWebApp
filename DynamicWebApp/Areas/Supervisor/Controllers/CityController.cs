@@ -34,13 +34,6 @@ public class CityController(IRepository<City, long> repository, IMapper mapper, 
         return View(viewModel);
     }
 
-    [HttpGet]
-    public override async Task<IActionResult> Create()
-    {
-        await DataBind();
-
-        return View("AddOrEdit", new CityCreateViewModel());
-    }
 
     public override async Task DataBind()
     {
