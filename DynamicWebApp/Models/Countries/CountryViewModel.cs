@@ -12,8 +12,8 @@ public class CountryListViewModel : BaseEntityViewModel, IListItemViewModel
 
 public class CountryDetailViewModel : BaseEntityViewModel, IDetailViewModel
 {
-    [DisplayName("Bölgeler")]
-    public string[] ZoneIds { get; set; }
+    //[DisplayName("Bölgeler")]
+    //public string[] ZoneIds { get; set; }
 
     [DisplayName("Ülke Adı")]
     [Required(ErrorMessage = "{0} zorunlu alandır")]
@@ -25,14 +25,14 @@ public class CountryDetailViewModel : BaseEntityViewModel, IDetailViewModel
     [DisplayName("Ekonomi Türü")]
     public CountryEconomicType? CountryEconomicType { get; set; }
 
-    //[DisplayName("Geçen Paralar")]
-    //public CurrencyType[] CurrencyTypeIds { get; set; }
+    [DisplayName("Geçen Paralar")]
+    public CurrencyType[] CurrencyTypeIds { get; set; }
 }
 
 public class CountryCreateViewModel : BaseEntityViewModel, ICreateViewModel
 {
-    [DisplayName("Bölgeler")]
-    public string[] ZoneIds { get; set; }
+    //[DisplayName("Bölgeler")]
+    //public string[] ZoneIds { get; set; }
 
     [DisplayName("Ülke Adı")]
     [Required(ErrorMessage = "{0} zorunlu alandır")]
@@ -44,14 +44,14 @@ public class CountryCreateViewModel : BaseEntityViewModel, ICreateViewModel
     [DisplayName("Ekonomi Türü")]
     public CountryEconomicType CountryEconomicType { get; set; }
 
-    //[DisplayName("Geçen Paralar")]
-    //public CurrencyType[] CurrencyTypeIds { get; set; }
+    [DisplayName("Geçen Paralar")]
+    public CurrencyType[] CurrencyTypeIds { get; set; }
 }
 
 public class CountryUpdateViewModel : BaseEntityViewModel, IUpdateViewModel
 {
-    [DisplayName("Bölgeler")]
-    public string[] ZoneIds { get; set; }
+    //[DisplayName("Bölgeler")]
+    //public string[] ZoneIds { get; set; }
 
     [DisplayName("Ülke Adı")]
     [Required(ErrorMessage = "{0} zorunlu alandır")]
@@ -63,6 +63,6 @@ public class CountryUpdateViewModel : BaseEntityViewModel, IUpdateViewModel
     [DisplayName("Ekonomi Türü")]
     public CountryEconomicType CountryEconomicType { get; set; }
 
-    //[DisplayName("Geçen Paralar")]
-    //public CurrencyType[] CurrencyTypeIds { get; set; }
+    [DisplayName("Geçen Paralar")]
+    public CurrencyType[] CurrencyTypeIds { get; set; }
 }
