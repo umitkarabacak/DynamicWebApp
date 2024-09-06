@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<object>
 @{
     ViewBag.Title = "Liste";
+    bool isAdmin = true;
     // TODO admin için isDeleted ve Id alanları gözükecek şekilde revize edilmeli.
 }
 
@@ -17,7 +18,7 @@
                     {
                         foreach (var property in Model.First().GetType().GetProperties())
                         {
-                            if (property.Name == "IsDeleted" || property.Name == "Id")
+                            if ((property.Name == "IsDeleted" || property.Name == "Id") & !isAdmin)
                                 continue;
 
                             <th>@Html.GetDisplayName(property)</th>
@@ -29,6 +30,7 @@
                 @foreach (var item in Model)
                 {
                     var itemId = Html.GetIdPropertyValue(item);
+                    var hasDeletedRecord = Html.GetIsDeletedPropertyValue(item);
                     <tr>
                         <td>
                             <div class="dropdown">
@@ -37,14 +39,21 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a asp-action="Detail" asp-route-id="@itemId" class="dropdown-item">Detay</a></li>
-                                    <li><a asp-action="Update" asp-route-id="@itemId" class="dropdown-item">Düzenle</a></li>
-                                    <li><a asp-action="Delete" asp-route-id="@itemId" class="dropdown-item">Sil</a></li>
+                                    @if (isAdmin || !hasDeletedRecord)
+                                    {
+                                        <li><a asp-action="Update" asp-route-id="@itemId" class="dropdown-item">Düzenle</a></li>
+                                    }
+                                    @if (!hasDeletedRecord)
+                                    {
+                                        <li><a asp-action="Delete" asp-route-id="@itemId" class="dropdown-item">Kaldır</a></li>
+                                        <li><a asp-action="Remove" asp-route-id="@itemId" class="dropdown-item">Sil</a></li>
+                                    }
                                 </ul>
                             </div>
                         </td>
                         @foreach (var property in item.GetType().GetProperties())
                         {
-                            if (property.Name == "IsDeleted" || property.Name == "Id")
+                            if ((property.Name == "IsDeleted" || property.Name == "Id") & !isAdmin)
                                 continue;
 
                             <td>@Html.GetPropertyValue(item, property.Name)</td>

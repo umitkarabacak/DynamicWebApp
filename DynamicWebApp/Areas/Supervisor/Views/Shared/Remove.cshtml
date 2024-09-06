@@ -1,0 +1,20 @@
+﻿@model object
+@{
+    ViewBag.Title = "Sil";
+    var idProperty = Model.GetType().GetProperties().FirstOrDefault(p => p.Name.Equals("Id"));
+}
+<partial name="Detail" model="@Model" />
+<div class="row justify-content-md-center">
+    <div class="col-8">
+        <div class="mb-3">
+            <form asp-action="Remove" asp-antiforgery="true" class="d-grid">
+                <input type="hidden" name="@idProperty.Name" value="@idProperty.GetValue(Model)" />
+                <button onclick="return confirm('Tamamen Silmek İstediğinze Emin misiniz ?');" class="btn btn-danger btn-block">Tamamen Sil</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,17 +1,21 @@
 ﻿@model object
 @{
     ViewBag.Title = "Detay";
+    bool isAdmin = true;
     // TODO admin için isDeleted ve Id alanları gözükecek şekilde revize edilmeli.
 }
 
 <div class="container">
     <div class="row justify-content-md-center">
         <h5 class="text-center">@ViewBag.Title</h5>
+        <div class="mb-3">
+            <a asp-action="Index" class="btn-link">Tüm listeye geri dön</a>
+        </div>
         <div class="col-8">
             <div class="row">
                 @foreach (var property in Model.GetType().GetProperties())
                 {
-                    if (property.Name == "IsDeleted" || property.Name == "Id")
+                    if ((property.Name == "IsDeleted" || property.Name == "Id") & !isAdmin)
                         continue;
 
                     <dt class="col-sm-3">@Html.GetDisplayName(property)</dt>

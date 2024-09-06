@@ -36,6 +36,11 @@ public static class HtmlHelperExtension
         return html.GetPropertyValue(obj, "Id");
     }
 
+    public static bool GetIsDeletedPropertyValue(this IHtmlHelper html, object obj)
+    {
+        return Convert.ToBoolean(html.GetPropertyValue(obj, "IsDeleted"));
+    }
+
     public static object GetPropertyValue(this IHtmlHelper html, object obj, string propertyName)
     {
         var value = obj?.GetType().GetProperty(propertyName)?.GetValue(obj, null) ?? string.Empty;
