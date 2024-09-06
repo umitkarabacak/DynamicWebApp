@@ -64,16 +64,21 @@
                     else if (property.Name.EndsWith("Ids") || (property.PropertyType.IsArray && property.PropertyType.GetElementType().IsEnum))
                     {
                         var selectedValuesArray = property.GetValue(Model) as Array;
-                        var selectedValueStrings = selectedValuesArray
-                        .Cast<object>()
-                        .Select(v => Convert.ToInt32(v).ToString())
-                        .ToList();
+                        var anyArray = selectedValuesArray is not null;
+                        List<string> selectedValueStrings = Array.Empty<string>().ToList();
+                        if (anyArray)
+                        {
+                            selectedValueStrings = selectedValuesArray
+                            .Cast<object>()
+                            .Select(v => Convert.ToInt32(v).ToString())
+                            .ToList();
+                        }
 
                         <select name="@property.Name" class="form-control select2" multiple>
                             @foreach (var item in ViewData[property.Name] as SelectList)
                             {
                                 var currentValue = item.Value?.ToString();  // item.Value'yi string olarak al
-                                var hasSelectedValue = selectedValueStrings.Contains(currentValue);
+                                var hasSelectedValue = anyArray ? selectedValueStrings.Contains(currentValue) : false;
 
                                 <option value="@item.Value" selected="@(hasSelectedValue ? "selected" : null)">@item.Text</option>
                             }

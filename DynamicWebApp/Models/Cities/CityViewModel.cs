@@ -41,7 +41,7 @@ public class CityUpdateViewModel : BaseEntityViewModel, IUpdateViewModel
 {
     [DisplayName("Ülke Adı")]
     [Required(ErrorMessage = "{0} zorunlu alandır")]
-    public long CountryListId { get; set; }
+    public long CountryId { get; set; }
 
     [DisplayName("Şehir Adı")]
     [Required(ErrorMessage = "{0} zorunlu alandır")]
