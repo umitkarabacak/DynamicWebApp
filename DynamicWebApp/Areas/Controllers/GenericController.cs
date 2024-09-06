@@ -10,6 +10,7 @@ public interface IRepository<T, TKey> where T : BaseEntity<TKey>
     Task UpdateAsync(T entity);
     Task DeleteAsync(TKey id);
     Task RemoveAsync(TKey id);
+    Task RollbackAsync(TKey id);
 }
 
 public class Repository<T, TKey>(ProjectDbContext dbContext)
@@ -47,13 +48,24 @@ public class Repository<T, TKey>(ProjectDbContext dbContext)
             await dbContext.SaveChangesAsync();
         }
     }
-
+    
     public virtual async Task RemoveAsync(TKey id)
     {
         var entity = await GetByIdAsync(id);
         if (entity != null)
         {
             dbContext.Set<T>().Remove(entity);
+            await dbContext.SaveChangesAsync();
+        }
+    }
+
+    public virtual async Task RollbackAsync(TKey id)
+    {
+        var entity = await GetByIdAsync(id);
+        if (entity != null)
+        {
+            entity.IsDeleted = false;
+            dbContext.Set<T>().Update(entity);
             await dbContext.SaveChangesAsync();
         }
     }
@@ -75,6 +87,8 @@ public interface IGenericController<TKey, TItemViewModel, TItemDetailViewModel, 
     Task<IActionResult> DeleteConfirmed(TKey id);
     Task<IActionResult> Remove(TKey id);
     Task<IActionResult> RemoveConfirmed(TKey id);
+    Task<IActionResult> Rollback(TKey id);
+    Task<IActionResult> RollbackConfirmed(TKey id);
 }
 
 public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailViewModel, TCreateViewModel, TUpdateViewModel>(IRepository<T, TKey> repository, IMapper mapper)
@@ -221,6 +235,33 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
             return RedirectToAction(nameof(Index));
 
         await repository.RemoveAsync(id);
+        return RedirectToAction(nameof(Index));
+    }
+    
+    [HttpGet]
+    public virtual async Task<IActionResult> Rollback(TKey id)
+    {
+        if (IsDefaultValue(id))
+            return RedirectToAction(nameof(Index));
+
+        await DataBind();
+        var model = await repository.GetByIdAsync(id);
+        if (model == null)
+        {
+            return NotFound();
+        }
+        var viewModel = mapper.Map<TItemDetailViewModel>(model);
+        return View(viewModel);
+    }
+
+    [HttpPost, ActionName("Rollback")]
+    [ValidateAntiForgeryToken]
+    public virtual async Task<IActionResult> RollbackConfirmed(TKey id)
+    {
+        if (IsDefaultValue(id))
+            return RedirectToAction(nameof(Index));
+
+        await repository.RollbackAsync(id);
         return RedirectToAction(nameof(Index));
     }
 

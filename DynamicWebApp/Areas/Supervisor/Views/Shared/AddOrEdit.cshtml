@@ -3,8 +3,7 @@
     bool isCreate = Model is ICreateViewModel;
     ViewBag.Title = isCreate ? "Ekle" : "Düzenle";
     var textAreaNames = new[] { "Description", "Content", "Detail" };
-    bool isAdmin = true;
-    // TODO admin için isDeleted ve Id alanları gözükecek şekilde revize edilmeli.
+    var hasDeletedRecord = Html.GetIsDeletedPropertyValue(Model);
     //TODO enum ve select list için birleştirme yapılmasını denetle
 }
 
@@ -18,7 +17,7 @@
         </div>
         @foreach (var property in Model.GetType().GetProperties())
         {
-            if ((property.Name == "IsDeleted" || property.Name == "Id") & !isAdmin)
+            if (property.Name == "IsDeleted" || property.Name == "Id")
                 continue;
 
             var displayName = Html.GetDisplayName(property);
@@ -38,15 +37,7 @@
                 }
                 else
                 {
-
-                    @if (property.Name.Equals("Id"))
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        <label class="control-label" for="@property.Name">@displayName</label>
-                    }
+                    <label class="control-label" for="@property.Name">@displayName</label>
 
                     if (property.PropertyType == typeof(int) || property.PropertyType == typeof(double) || property.PropertyType == typeof(decimal))
                     {
@@ -115,10 +106,12 @@
                 }
             </div>
         }
-
-        <div class="mb-3">
-            <button class="btn btn-outline-success col-3">@ViewBag.Title</button>
-        </div>
+        @if (!hasDeletedRecord)
+        {
+            <div class="mb-3">
+                <button class="btn btn-outline-success col-3">@ViewBag.Title</button>
+            </div>
+        }
     </form>
 </div>
 

@@ -47,7 +47,7 @@
                                         <li><a asp-action="Detail" asp-route-id="@itemId" class="dropdown-item">Detay</a></li>
                                         @if (isAdmin && hasDeletedRecord)
                                         {
-                                            <li><a asp-action="Rolback" asp-route-id="@itemId" class="dropdown-item">Kaydı Geri Yükle</a></li>
+                                            <li><a asp-action="Rollback" asp-route-id="@itemId" class="dropdown-item">Kaydı Geri Yükle</a></li>
                                         }
                                         @if (!hasDeletedRecord)
                                         {

@@ -2,6 +2,9 @@
 @{
     ViewBag.Title = "Detay";
     bool isAdmin = true;
+    var itemId = Html.GetIdPropertyValue(Model);
+    var hasDeletedRecord = Html.GetIsDeletedPropertyValue(Model);
+
     // TODO admin için isDeleted ve Id alanları gözükecek şekilde revize edilmeli.
 }
 
@@ -11,9 +14,12 @@
         <div class="mb-3">
             <a asp-action="Index" class="btn-link">Tüm listeye geri dön</a>
         </div>
-        <div class="mb-3">
-            <a asp-action="Update" class="btn-link">Düzenle</a>
-        </div>
+        @if (!hasDeletedRecord)
+        {
+            <div class="mb-3">
+                <a asp-action="Update" asp-route-id="@itemId" class="btn-link">Düzenle</a>
+            </div>
+        }
         <div class="col-8">
             <div class="row">
                 @foreach (var property in Model.GetType().GetProperties())
