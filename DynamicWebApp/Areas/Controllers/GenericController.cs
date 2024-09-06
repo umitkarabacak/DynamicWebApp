@@ -1,4 +1,6 @@
-﻿namespace DynamicWebApp.Areas.Controllers;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace DynamicWebApp.Areas.Controllers;
 
 public interface IRepository<T, TKey> where T : BaseEntity<TKey>
 {
@@ -95,6 +97,9 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
     [HttpGet]
     public virtual async Task<IActionResult> Detail(TKey id)
     {
+        if (IsDefaultValue(id))
+            return RedirectToAction(nameof(Index));
+
         await DataBind();
         var model = await repository.GetByIdAsync(id);
         if (model == null)
@@ -133,6 +138,9 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
     [HttpGet]
     public virtual async Task<IActionResult> Update(TKey id)
     {
+        if (IsDefaultValue(id))
+            return RedirectToAction(nameof(Index));
+
         await DataBind();
         var model = await repository.GetByIdAsync(id);
         if (model == null)
@@ -148,6 +156,9 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
     [ValidateAntiForgeryToken]
     public virtual async Task<IActionResult> Update(TUpdateViewModel viewModel)
     {
+        if (IsDefaultValue(viewModel.Id))
+            return RedirectToAction(nameof(Index));
+
         await DataBind();
         if (!ModelState.IsValid)
         {
@@ -162,6 +173,9 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
     [HttpGet]
     public virtual async Task<IActionResult> Delete(TKey id)
     {
+        if (IsDefaultValue(id))
+            return RedirectToAction(nameof(Index));
+
         await DataBind();
         var model = await repository.GetByIdAsync(id);
         if (model == null)
@@ -176,6 +190,9 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
     [ValidateAntiForgeryToken]
     public virtual async Task<IActionResult> DeleteConfirmed(TKey id)
     {
+        if (IsDefaultValue(id))
+            return RedirectToAction(nameof(Index));
+
         await repository.DeleteAsync(id);
         return RedirectToAction(nameof(Index));
     }
@@ -183,6 +200,9 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
     [HttpGet]
     public virtual async Task<IActionResult> Remove(TKey id)
     {
+        if (IsDefaultValue(id))
+            return RedirectToAction(nameof(Index));
+
         await DataBind();
         var model = await repository.GetByIdAsync(id);
         if (model == null)
@@ -197,6 +217,9 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
     [ValidateAntiForgeryToken]
     public virtual async Task<IActionResult> RemoveConfirmed(TKey id)
     {
+        if (IsDefaultValue(id))
+            return RedirectToAction(nameof(Index));
+
         await repository.RemoveAsync(id);
         return RedirectToAction(nameof(Index));
     }
@@ -257,5 +280,29 @@ public abstract class GenericController<T, TKey, TItemViewModel, TItemDetailView
         }
 
         await Task.CompletedTask;
+    }
+
+    protected static bool IsDefaultValue(TKey id)
+    {
+        if (id == null)
+            return true;
+
+        // int veya long ise 0 kontrolü
+        if (id is int intId && intId == 0)
+            return true;
+
+        if (id is long longId && longId == 0L)
+            return true;
+
+        // string ise boş veya sadece boşluklardan oluşuyorsa
+        if (id is string strId && string.IsNullOrWhiteSpace(strId))
+            return true;
+
+        // Guid ise Guid.Empty kontrolü
+        if (id is Guid guidId && guidId == Guid.Empty)
+            return true;
+
+        // Yukarıdaki kontrollerden hiçbiri geçerli değilse, değer varsayılan değil
+        return false;
     }
 }

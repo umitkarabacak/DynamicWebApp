@@ -21,10 +21,10 @@
     </div>
     <div class="offcanvas-body">
         <ul class="list-group list-group-flush">
-            <li class="list-group-item @(Html.IsActive("Supervisor","Home","Index"))">
-                <a asp-area="Supervisor" asp-controller="Home" asp-action="Index">Anasayfa</a>
+            <li class="list-group-item @(Html.IsActive("","Home","Index"))">
+                <a asp-area="" asp-controller="Home" asp-action="Index">Anasayfa</a>
             </li>
-            <li class="list-group-item">
+            @* <li class="list-group-item">
                 <a class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#emailSubmenu" role="button" aria-expanded="false" aria-controls="emailSubmenu">
                     Email Konfigürasyonu
                     <i class="bi bi-0-circle"></i>
@@ -60,6 +60,86 @@
                         </li>
                         <li class="list-group-item @(Html.IsActive("Supervisor","Categories","Create"))">
                             <a asp-area="Supervisor" asp-controller="Categories" asp-action="Create">Ekle</a>
+                        </li>
+                    </ul>
+                </div>
+            </li> *@
+            <li class="list-group-item">
+                <a class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#zoneSubmenu" role="button" aria-expanded="false" aria-controls="zoneSubmenu">
+                    Bölgeler
+                    <i class="bi bi-0-circle"></i>
+                    <i class="bi bi-chevron-down"></i>
+                </a>
+                <div class="collapse @(Html.IsParentActive("Supervisor", "Zone") ? "show" : "")" id="zoneSubmenu">
+                    <ul class="list-group list-group-flush ms-3">
+                        <li class="list-group-item @(Html.IsActive("Supervisor","Zone","Index"))">
+                            <a asp-area="Supervisor" asp-controller="Zone" asp-action="Index">Liste</a>
+                        </li>
+                        <li class="list-group-item @(Html.IsActive("Supervisor","Zone","Detail"))">
+                            <a asp-area="Supervisor" asp-controller="Zone" asp-action="Detail">Detay</a>
+                        </li>
+                        <li class="list-group-item @(Html.IsActive("Supervisor","Zone","Create"))">
+                            <a asp-area="Supervisor" asp-controller="Zone" asp-action="Create">Ekle</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <a class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#countrySubmenu" role="button" aria-expanded="false" aria-controls="countrySubmenu">
+                    Ülkeler
+                    <i class="bi bi-0-circle"></i>
+                    <i class="bi bi-chevron-down"></i>
+                </a>
+                <div class="collapse @(Html.IsParentActive("Supervisor", "Country") ? "show" : "")" id="countrySubmenu">
+                    <ul class="list-group list-group-flush ms-3">
+                        <li class="list-group-item @(Html.IsActive("Supervisor","Country","Index"))">
+                            <a asp-area="Supervisor" asp-controller="Country" asp-action="Index">Liste</a>
+                        </li>
+                        <li class="list-group-item @(Html.IsActive("Supervisor","Country","Detail"))">
+                            <a asp-area="Supervisor" asp-controller="Country" asp-action="Detail">Detay</a>
+                        </li>
+                        <li class="list-group-item @(Html.IsActive("Supervisor","Country","Create"))">
+                            <a asp-area="Supervisor" asp-controller="Country" asp-action="Create">Ekle</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <a class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#citySubmenu" role="button" aria-expanded="false" aria-controls="citySubmenu">
+                    Şehirler
+                    <i class="bi bi-0-circle"></i>
+                    <i class="bi bi-chevron-down"></i>
+                </a>
+                <div class="collapse @(Html.IsParentActive("Supervisor", "City") ? "show" : "")" id="citySubmenu">
+                    <ul class="list-group list-group-flush ms-3">
+                        <li class="list-group-item @(Html.IsActive("Supervisor","City","Index"))">
+                            <a asp-area="Supervisor" asp-controller="City" asp-action="Index">Liste</a>
+                        </li>
+                        <li class="list-group-item @(Html.IsActive("Supervisor","City","Detail"))">
+                            <a asp-area="Supervisor" asp-controller="City" asp-action="Detail">Detay</a>
+                        </li>
+                        <li class="list-group-item @(Html.IsActive("Supervisor","City","Create"))">
+                            <a asp-area="Supervisor" asp-controller="City" asp-action="Create">Ekle</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <a class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#umitSubmenu" role="button" aria-expanded="false" aria-controls="umitSubmenu">
+                    Ümit
+                    <i class="bi bi-0-circle"></i>
+                    <i class="bi bi-chevron-down"></i>
+                </a>
+                <div class="collapse @(Html.IsParentActive("Supervisor", "Umit") ? "show" : "")" id="umitSubmenu">
+                    <ul class="list-group list-group-flush ms-3">
+                        <li class="list-group-item @(Html.IsActive("Supervisor","Umit","Index"))">
+                            <a asp-area="Supervisor" asp-controller="Umit" asp-action="Index">Liste</a>
+                        </li>
+                        <li class="list-group-item @(Html.IsActive("Supervisor","Umit","Detail"))">
+                            <a asp-area="Supervisor" asp-controller="Umit" asp-action="Detail">Detay</a>
+                        </li>
+                        <li class="list-group-item @(Html.IsActive("Supervisor","Umit","Create"))">
+                            <a asp-area="Supervisor" asp-controller="Umit" asp-action="Create">Ekle</a>
                         </li>
                     </ul>
                 </div>

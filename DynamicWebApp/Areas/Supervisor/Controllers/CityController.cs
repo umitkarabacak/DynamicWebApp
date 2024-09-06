@@ -20,17 +20,21 @@ public class CityController(IRepository<City, long> repository, IMapper mapper, 
     [HttpGet]
     public override async Task<IActionResult> Detail(long id)
     {
+        if (IsDefaultValue(id))
+            return RedirectToAction(nameof(Index));
+
         await DataBind();
+
         var model = await dbContext.Cities
             .AsNoTracking()
             .Include(c => c.Country)
             .FirstOrDefaultAsync(c => c.Id.Equals(id));
 
         if (model == null)
-        {
             return NotFound();
-        }
+
         var viewModel = mapper.Map<CityDetailViewModel>(model);
+
         return View(viewModel);
     }
 

@@ -3,6 +3,8 @@
     bool isCreate = Model is ICreateViewModel;
     ViewBag.Title = isCreate ? "Ekle" : "Düzenle";
     var textAreaNames = new[] { "Description", "Content", "Detail" };
+    bool isAdmin = true;
+    // TODO admin için isDeleted ve Id alanları gözükecek şekilde revize edilmeli.
     //TODO enum ve select list için birleştirme yapılmasını denetle
 }
 
@@ -16,7 +18,7 @@
         </div>
         @foreach (var property in Model.GetType().GetProperties())
         {
-            if (property.Name == "IsDeleted" || property.Name == "Id")
+            if ((property.Name == "IsDeleted" || property.Name == "Id") & !isAdmin)
                 continue;
 
             var displayName = Html.GetDisplayName(property);
@@ -36,9 +38,17 @@
                 }
                 else
                 {
-                    <label class="control-label" for="@property.Name">@displayName</label>
 
-                    @if (property.PropertyType == typeof(int) || property.PropertyType == typeof(double) || property.PropertyType == typeof(decimal))
+                    @if (property.Name.Equals("Id"))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        <label class="control-label" for="@property.Name">@displayName</label>
+                    }
+
+                    if (property.PropertyType == typeof(int) || property.PropertyType == typeof(double) || property.PropertyType == typeof(decimal))
                     {
                         <input type="number" name="@property.Name" class="form-control" value="@property.GetValue(Model)" />
                     }

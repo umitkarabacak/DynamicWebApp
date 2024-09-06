@@ -9,6 +9,7 @@ global using DynamicWebApp.Extensions;
 global using DynamicWebApp.Models.Base;
 global using DynamicWebApp.Models.Cities;
 global using DynamicWebApp.Models.Countries;
+global using DynamicWebApp.Models.Umits;
 global using DynamicWebApp.Models.Zones;
 global using DynamicWebApp.Persistence;
 global using DynamicWebApp.Persistence.Contexts;

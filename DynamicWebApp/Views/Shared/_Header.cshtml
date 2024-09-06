@@ -1,4 +1,5 @@
 ﻿@{
+    bool isCloseMenu = true;
     bool isAuthUser = User.Identity.IsAuthenticated;
 }
 <header>
@@ -21,6 +22,9 @@
                     </li>
                     <li class="nav-item">
                         <a asp-area="Supervisor" asp-controller="City" asp-action="Index" class="nav-link">City</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="Supervisor" asp-controller="Umit" asp-action="Index" class="nav-link">Ümit</a>
                     </li>
                 </ul>
                 @if (isAuthUser)
@@ -48,10 +52,13 @@
                 }
                 else
                 {
-                    <div class="">
-                        <a asp-area="" asp-controller="Account" asp-action="Login" class="btn btn-outline-success">Bireysel Giriş yap</a>
-                        <a asp-area="Admin" asp-controller="Account" asp-action="Login" class="btn btn-outline-success">Kurumsal Giriş yap</a>
-                    </div>
+                    if (!isCloseMenu)
+                    {
+                        <div class="">
+                            <a asp-area="" asp-controller="Account" asp-action="Login" class="btn btn-outline-success">Bireysel Giriş yap</a>
+                            <a asp-area="Admin" asp-controller="Account" asp-action="Login" class="btn btn-outline-success">Kurumsal Giriş yap</a>
+                        </div>
+                    }
                 }
             </div>
         </div>
