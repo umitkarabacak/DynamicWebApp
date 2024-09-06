@@ -5,6 +5,14 @@ public class CountryController(IRepository<Country, long> repository, IMapper ma
     : GenericController<Country, long, CountryListViewModel, CountryDetailViewModel, CountryCreateViewModel, CountryUpdateViewModel>
     (repository, mapper)
 {
+    [HttpGet]
+    public override async Task<IActionResult> Create()
+    {
+        await DataBind();
+
+        return View("AddOrEdit", new CountryCreateViewModel());
+    }
+
     public override async Task DataBind()
     {
         ViewBag.CountryEconomicType = EnumExtension.GetSelectList<CountryEconomicType>();
