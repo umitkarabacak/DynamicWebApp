@@ -24,46 +24,6 @@
             <li class="list-group-item @(Html.IsActive("","Home","Index"))">
                 <a asp-area="" asp-controller="Home" asp-action="Index">Anasayfa</a>
             </li>
-            @* <li class="list-group-item">
-                <a class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#emailSubmenu" role="button" aria-expanded="false" aria-controls="emailSubmenu">
-                    Email Konfigürasyonu
-                    <i class="bi bi-0-circle"></i>
-                    <i class="bi bi-chevron-down"></i>
-                </a>
-                <div class="collapse @(Html.IsParentActive("Supervisor", "EmailConfigurations") ? "show" : "")" id="emailSubmenu">
-                    <ul class="list-group list-group-flush ms-3">
-                        <li class="list-group-item @(Html.IsActive("Supervisor","EmailConfigurations","Index"))">
-                            <a asp-area="Supervisor" asp-controller="EmailConfigurations" asp-action="Index">Liste</a>
-                        </li>
-                        <li class="list-group-item @(Html.IsActive("Supervisor","EmailConfigurations","Detail"))">
-                            <a asp-area="Supervisor" asp-controller="EmailConfigurations" asp-action="Detail">Detay</a>
-                        </li>
-                        <li class="list-group-item @(Html.IsActive("Supervisor","EmailConfigurations","Create"))">
-                            <a asp-area="Supervisor" asp-controller="EmailConfigurations" asp-action="Create">Ekle</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <li class="list-group-item">
-                <a class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#homeSubmenu" role="button" aria-expanded="false" aria-controls="homeSubmenu">
-                    Kategoriler
-                    <i class="bi bi-0-circle"></i>
-                    <i class="bi bi-chevron-down"></i>
-                </a>
-                <div class="collapse @(Html.IsParentActive("Supervisor", "Categories") ? "show" : "")" id="homeSubmenu">
-                    <ul class="list-group list-group-flush ms-3">
-                        <li class="list-group-item @(Html.IsActive("Supervisor","Categories","Index"))">
-                            <a asp-area="Supervisor" asp-controller="Categories" asp-action="Index">Liste</a>
-                        </li>
-                        <li class="list-group-item @(Html.IsActive("Supervisor","Categories","Detail"))">
-                            <a asp-area="Supervisor" asp-controller="Categories" asp-action="Detail">Detay</a>
-                        </li>
-                        <li class="list-group-item @(Html.IsActive("Supervisor","Categories","Create"))">
-                            <a asp-area="Supervisor" asp-controller="Categories" asp-action="Create">Ekle</a>
-                        </li>
-                    </ul>
-                </div>
-            </li> *@
             <li class="list-group-item">
                 <a class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#zoneSubmenu" role="button" aria-expanded="false" aria-controls="zoneSubmenu">
                     Bölgeler

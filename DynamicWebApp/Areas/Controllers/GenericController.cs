@@ -1,6 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-namespace DynamicWebApp.Areas.Controllers;
+﻿namespace DynamicWebApp.Areas.Controllers;
 
 public interface IRepository<T, TKey> where T : BaseEntity<TKey>
 {
