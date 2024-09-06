@@ -4,8 +4,14 @@ public class DynamicProfile : Profile
 {
     public DynamicProfile()
     {
-        // Get all assemblies referenced by the current assembly
-        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        // BaseEntity<> ve BaseEntityViewModel<> türlerinden birinin assembly'sini alın
+        var modelBaseEntityAssembly = typeof(BaseEntity<>).Assembly;
+        var modelBaseEntityViewModelAssembly = typeof(BaseEntityViewModel<>).Assembly;
+
+        var assemblies = new[] { modelBaseEntityAssembly, modelBaseEntityViewModelAssembly };
+
+        //// Get all assemblies referenced by the current assembly
+        ////var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
         // Find all types derived from BaseEntity<T>
         var entityTypes = assemblies.SelectMany(a => a.GetTypes())
@@ -14,6 +20,7 @@ public class DynamicProfile : Profile
                             (t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == typeof(BaseEntity<>))
                             || t.BaseType == typeof(BaseEntity)
                         ))
+            .Distinct()
             .ToList();
 
         // Find all types derived from BaseEntityViewModel<T>
@@ -23,6 +30,7 @@ public class DynamicProfile : Profile
                             (t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == typeof(BaseEntityViewModel<>))
                             || t.BaseType == typeof(BaseEntityViewModel)
                         ))
+            .Distinct()
             .ToList();
 
         foreach (var entityType in entityTypes)
@@ -42,6 +50,7 @@ public class DynamicProfile : Profile
                                 p.PropertyType == typeof(int[]) ||
                                 p.PropertyType == typeof(long[]) ||
                                 p.PropertyType == typeof(Guid[])))
+                    .Distinct()
                     .ToList();
 
                 foreach (var property in idsProperties)
@@ -86,6 +95,13 @@ public class DynamicProfile : Profile
                         map.ForMember(property.Name, opts => opts.MapFrom(src => convertToEnumArray((string)entityProp.GetValue(src), enumType)));
                         map.ReverseMap().ForMember(property.Name, opts => opts.MapFrom(src => convertEnumArrayToString((Array)property.GetValue(src))));
                     }
+                }
+
+                // Enum Array yada Ids ile bitmeyenler için ReverseMap'i çağır
+                if (idsProperties.Count == 0 && enumProperties.Count == 0)
+                {
+                    var reverseMapMethod = map.GetType().GetMethod("ReverseMap");
+                    reverseMapMethod.Invoke(map, null);
                 }
             }
         }
